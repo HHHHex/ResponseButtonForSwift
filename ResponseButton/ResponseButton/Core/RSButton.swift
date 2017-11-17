@@ -30,18 +30,18 @@ class RSButton: UIButton {
     
     var rsState: ResponseState = .normal {
         willSet {
-            if newValue == .normal {//正常状态是可以点击的
+            if newValue == .normal {
                 self.isEnabled = true
                 self.stopRun()
-            } else if newValue == .waiting {//按下状态无法点击
+            } else if newValue == .waiting {
                 self.isEnabled = false
                 self.setTitle(t_waiting, for: .disabled)
                 self.stopRun()
-            } else if newValue == .disable {//不可用状态无法点击
+            } else if newValue == .disable {
                 self.isEnabled = false
                 self.setTitle(t_disable, for: .disabled)
                 self.stopRun()
-            } else if newValue == .runing {//运行状态无法点击
+            } else if newValue == .runing {
                 self.isEnabled = false
                 self.startRun()
             }
@@ -88,26 +88,18 @@ class RSButton: UIButton {
     
     /**对每个对应的状态设置标题*/
     func setTitlesFor(normal: String?, waiting: String?, disable: String?) {
-        if normal != nil {
-            t_normal = normal!
-        }
-        if waiting != nil {
-            t_waiting = waiting!
-        }
-        if disable != nil {
-            t_disable = disable!
-        }
+        t_normal = normal ?? ""
+        t_waiting = waiting ?? ""
+        t_disable = disable ?? ""
         self.setTitle(t_normal, for: .normal)
     }
-
-    
 }
 
 private extension RSButton {
     // MARK: - Actions
     @objc private func countTime() {
         if count == 0 {
-            count = timeOut
+            self.stopRun()
             self.rsState = .normal
             self.block?(self)
         } else {
@@ -131,13 +123,13 @@ private extension RSButton {
     }
     
     private func stopRun() {
-        if self.rsStyle == .count {
-            if timer != nil {
-                timer?.invalidate()
-                timer = nil
-            }
-        } else if self.rsStyle == .active {
+        if self.rsStyle == .active {
             self.active?.stopAnimating()
+        }
+        if timer != nil {
+            count = timeOut
+            timer?.invalidate()
+            timer = nil
         }
     }
     
