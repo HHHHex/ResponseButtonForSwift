@@ -36,6 +36,7 @@ class RSButton: UIButton {
             } else if newValue == .waiting {//按下状态无法点击
                 self.isEnabled = false
                 self.setTitle(t_waiting, for: .disabled)
+                self.stopRun()
             } else if newValue == .disable {//不可用状态无法点击
                 self.isEnabled = false
                 self.setTitle(t_disable, for: .disabled)
@@ -53,7 +54,7 @@ class RSButton: UIButton {
     private var t_normal: String = ""
     private var t_waiting: String = ""
     private var t_disable: String = ""
-    private var block: (()->())?
+    private var block: ((_ sender: RSButton)->())?
     
     private lazy var active: UIActivityIndicatorView? = {
         let view = UIActivityIndicatorView.init(activityIndicatorStyle: .white)
@@ -79,25 +80,24 @@ class RSButton: UIButton {
         }
     }
     /**设置超时时间和超时执行*/
-    func setTimeOut(_ time: UInt, complet: (()->())?) {
+    func setTimeOut(_ time: UInt, complet: ((_ sender: RSButton)->())?) {
         self.timeOut = time
         self.count = time
         self.block = complet
     }
     
     /**对每个对应的状态设置标题*/
-    func setTitlesFor( normal: String?, waiting: String?, disable: String?) {
+    func setTitlesFor(normal: String?, waiting: String?, disable: String?) {
         if normal != nil {
             t_normal = normal!
-            self.setTitle(t_normal, for: .normal)
         }
         if waiting != nil {
             t_waiting = waiting!
         }
         if disable != nil {
             t_disable = disable!
-            self.setTitle(t_disable, for: .disabled)
         }
+        self.setTitle(t_normal, for: .normal)
     }
 
     
@@ -109,7 +109,7 @@ private extension RSButton {
         if count == 0 {
             count = timeOut
             self.rsState = .normal
-            self.block?()
+            self.block?(self)
         } else {
             count -= 1
             if rsStyle == .count {

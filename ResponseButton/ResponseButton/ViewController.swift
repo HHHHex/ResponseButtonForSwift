@@ -16,7 +16,7 @@ class ViewController: UIViewController {
                                  blue: 114/255,
                                  alpha: 1)
         let frame = CGRect.init(x: 0, y: 0, width: 160, height: 50)
-        let button = RSButton.init(style: .count, standColor: color, frame: frame)
+        let button = RSButton.init(style: .active, standColor: color, frame: frame)
         button.setTitlesFor(normal: "normal", waiting: "waiting", disable: "disable")
         return button
     }()
@@ -30,7 +30,7 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(buttonTap), for: .touchUpInside)
         button.layer.cornerRadius = 2
         button.clipsToBounds = true
-        button.setTimeOut(10) {
+        button.setTimeOut(10) { sender in
             print("button time out")
             //self.button.rsState = .disable
         }
