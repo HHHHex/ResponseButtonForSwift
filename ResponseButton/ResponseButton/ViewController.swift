@@ -16,7 +16,7 @@ class ViewController: UIViewController {
                                  blue: 114/255,
                                  alpha: 1)
         let frame = CGRect.init(x: 0, y: 0, width: 160, height: 50)
-        let button = RSButton.init(style: .count, standColor: color, frame: frame)
+        let button = RSButton.init(style: .active, standColor: color, frame: frame)
         button.setTitlesFor(normal: "normal", waiting: "waiting", disable: "disable")
         return button
     }()

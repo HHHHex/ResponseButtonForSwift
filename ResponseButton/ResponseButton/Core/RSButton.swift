@@ -111,12 +111,11 @@ private extension RSButton {
     }
     
     private func startRun() {
-        if self.rsStyle == .count {
-            if count != 0 {//不设置超时时间则不执行超时数秒
-                self.countTime()
-                timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countTime), userInfo: nil, repeats: true)
-            }
-        } else if self.rsStyle == .active {
+        if count != 0 {//不设置超时时间则不执行超时数秒
+            self.countTime()
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countTime), userInfo: nil, repeats: true)
+        }
+        if self.rsStyle == .active {
             self.setTitle("", for: .disabled)
             self.active?.startAnimating()
         }
